@@ -1,0 +1,122 @@
+<div class="detail-container">
+  <ng-template [ngIf]="loading()"><div class="loading">Loading character…</div></ng-template>
+  <ng-template [ngIf]="error()"
+    ><div class="error">Error: {{ error() }}</div></ng-template
+  >
+  <div style="margin-top: 16px">
+    <a routerLink="/">← Back</a>
+  </div>
+  
+  <ng-template [ngIf]="!loading() && character()">
+    <div class="character-detail">
+      <h2>{{ character().name }}</h2>
+
+      <div class="character-images" *ngIf="character().images?.length">
+        <h3>Images</h3>
+        <div class="image-list">
+          <img
+            *ngFor="let img of character().images"
+            [src]="img"
+            alt="{{ character().name }}"
+            class="character-image"
+          />
+        </div>
+      </div>
+
+      <div class="character-section">
+        <h3>Debut</h3>
+        <ul>
+          <li *ngFor="let key of character().debut | keyvalue">
+            <strong>{{ key.key }}:</strong> {{ key.value }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="character-section" *ngIf="character().family">
+        <h3>Family</h3>
+        <ul>
+          <li *ngFor="let key of character().family | keyvalue">
+            <strong>{{ key.key }}:</strong> {{ key.value }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="character-section" *ngIf="character().jutsu?.length">
+        <h3>Jutsu</h3>
+        <ul>
+          <li *ngFor="let j of character().jutsu">{{ j }}</li>
+        </ul>
+      </div>
+
+      <div class="character-section" *ngIf="character().natureType?.length">
+        <h3>Nature Types</h3>
+        <ul>
+          <li *ngFor="let n of character().natureType">{{ n }}</li>
+        </ul>
+      </div>
+
+      <div class="character-section" *ngIf="character().personal">
+        <h3>Personal</h3>
+        <ul>
+          <li *ngFor="let key of character().personal | keyvalue">
+            <strong>{{ key.key }}:</strong>
+            <ng-container *ngIf="isArray(key.value)">
+              <span *ngFor="let v of asArray(key.value); let last = last"
+                >{{ v }}<span *ngIf="!last">, </span></span
+              >
+            </ng-container>
+            <ng-container *ngIf="isObject(key.value)">
+              <span *ngFor="let subkey of asObject(key.value) | keyvalue"
+                >{{ subkey.key }}: {{ subkey.value }};
+              </span>
+            </ng-container>
+            <ng-container *ngIf="!isArray(key.value) && !isObject(key.value)">{{
+              key.value
+            }}</ng-container>
+          </li>
+        </ul>
+      </div>
+
+      <div class="character-section" *ngIf="character().rank">
+        <h3>Rank</h3>
+        <ul>
+          <li *ngFor="let key of character().rank | keyvalue">
+            <strong>{{ key.key }}:</strong>
+            <ng-container *ngIf="isObject(key.value)">
+              <span *ngFor="let subkey of asObject(key.value) | keyvalue"
+                >{{ subkey.key }}: {{ subkey.value }};
+              </span>
+            </ng-container>
+            <ng-container *ngIf="!isObject(key.value)">{{ key.value }}</ng-container>
+          </li>
+        </ul>
+      </div>
+
+      <div class="character-section" *ngIf="character().tools?.length">
+        <h3>Tools</h3>
+        <ul>
+          <li *ngFor="let t of character().tools">{{ t }}</li>
+        </ul>
+      </div>
+
+      <div class="character-section" *ngIf="character().voiceActors">
+        <h3>Voice Actors</h3>
+        <div *ngIf="character().voiceActors.japanese?.length">
+          <strong>Japanese:</strong>
+          <ul>
+            <li *ngFor="let v of character().voiceActors.japanese">{{ v }}</li>
+          </ul>
+        </div>
+        <div *ngIf="character().voiceActors.english?.length">
+          <strong>English:</strong>
+          <ul>
+            <li *ngFor="let v of character().voiceActors.english">{{ v }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- up arrow fixed button bottom-left -->
+      <button class="scroll-top" (click)="scrollToTop()" aria-label="Scroll to top">▲</button>
+    </div>
+  </ng-template>
+</div>
