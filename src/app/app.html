@@ -7,16 +7,6 @@
           A small Naruto character dictionary — explore ninjas, villages, and affiliations.
         </p>
       </div>
-      <div>
-        <button
-          (click)="toggleDark()"
-          [attr.aria-pressed]="dark()"
-          class="inline-flex items-center px-3 py-2 border rounded-md text-sm bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-        >
-          <span *ngIf="!dark()" class="text-lg">🌙</span>
-          <span *ngIf="dark()" class="text-lg">☀️</span>
-        </button>
-      </div>
     </div>
   </header>
 

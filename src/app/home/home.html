@@ -1,39 +1,54 @@
 <section class="search-section">
   <input
     aria-label="Search characters"
-    class="search-input"
+    class="w-full px-3 py-2 text-sm rounded-lg"
     placeholder="Search characters (e.g. Naruto, Sasuke)"
-    (input)="search.set($any($event.target).value)"
+    (input)="onSearch($any($event.target).value)"
+    [ngClass]="'theme-input'"
   />
 </section>
 
+<!-- Additional collections (clans, villages, etc.) -->
 <section class="characters">
   <h2 class="section-title">Characters</h2>
 
-  <ng-template [ngIf]="loading()"><div class="loading">Loading characters…</div></ng-template>
-  <ng-template [ngIf]="error()"
-    ><div class="error">Error: {{ error() }}</div></ng-template
-  >
+  <ng-template [ngIf]="loading()">
+    <div class="text-center text-sm" [ngClass]="'theme-text'">Loading characters…</div>
+  </ng-template>
+  <ng-template [ngIf]="error()">
+    <div class="text-center text-sm text-red-400">Error: {{ error() }}</div>
+  </ng-template>
 
-  <ul class="cards">
-    <ng-template ngFor let-c [ngForOf]="filtered()">
-      <li class="card">
-        <a class="card-link" [routerLink]="['/character', c.id ?? c._id ?? c.slug]">
-          <h3 class="card-title">{{ c.name || c.title }}</h3>
-          <p class="card-desc">{{ c.description || c.bio || c.about || c.short || '' }}</p>
-          <div class="badges">
-            <ng-template [ngIf]="c.village"
-              ><span class="badge">{{ c.village }}</span></ng-template
-            >
-            <ng-template [ngIf]="c.affiliation"
-              ><span class="badge">{{ c.affiliation }}</span></ng-template
-            >
-            <ng-template [ngIf]="c.clan"
-              ><span class="badge">{{ c.clan }}</span></ng-template
-            >
-          </div>
-        </a>
-      </li>
-    </ng-template>
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <li *ngFor="let c of filtered()">
+      <a
+        [routerLink]="['/character', c.id ?? c._id ?? c.slug]"
+        class="block p-4 rounded-lg shadow hover:shadow-lg transition-colors h-full"
+        [ngClass]="'theme-card'"
+      >
+        <h3 class="text-lg font-semibold mb-1" [ngClass]="'theme-text'">{{ c.name || c.title }}</h3>
+      </a>
+    </li>
   </ul>
+  <div class="mt-4 text-center">
+    <button
+      *ngIf="hasMore()"
+      (click)="showMore()"
+      class="px-4 py-2 rounded-md border"
+      [disabled]="loadingMore() || loading()"
+    >
+      {{ loadingMore() ? 'Loading…' : 'Show more' }}
+    </button>
+  </div>
 </section>
+
+<!-- Additional collections (clans, villages, etc.) -->
+<app-collection-section
+  *ngFor="let s of sections"
+  [title]="s.title"
+  [desc]="s.desc"
+  [items]="s.items()"
+  [loading]="s.loading()"
+  [hasMore]="s.hasMore()"
+  [onShowMore]="getShowMore(s)"
+></app-collection-section>

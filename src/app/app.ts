@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('naruto-dict');
+  protected readonly title = signal('Naruto Dictionary');
 
   protected readonly dark = signal<boolean>(false);
 

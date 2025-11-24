@@ -1,0 +1,31 @@
+<section class="collection-section mt-8">
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="section-title">{{ title }}</h2>
+    <button
+      *ngIf="hasMore"
+      (click)="onShowMore?.()"
+      class="ml-auto px-3 py-1 rounded border"
+      [disabled]="loading"
+    >
+      Show more
+    </button>
+  </div>
+  <div class="text-sm mb-2" [ngClass]="'theme-text'">{{ desc }}</div>
+  <ng-template [ngIf]="loading">
+    <div class="text-center text-sm" [ngClass]="'theme-text'">
+      Loading {{ title.toLowerCase() }}…
+    </div>
+  </ng-template>
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <li *ngFor="let item of items">
+      <div
+        class="block p-4 rounded-lg shadow hover:shadow-lg transition-colors h-full"
+        [ngClass]="'theme-card'"
+      >
+        <h3 class="text-lg font-semibold mb-1" [ngClass]="'theme-text'">
+          {{ item.name || item.title || item.id || item._id }}
+        </h3>
+      </div>
+    </li>
+  </ul>
+</section>

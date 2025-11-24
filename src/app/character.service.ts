@@ -63,6 +63,101 @@ export class CharacterService {
   }
 
   /**
+   * Fetch a single paginated page from the characters endpoint.
+   * Expects query params: `?page=<number>&limit=<number>&name=<string?>`.
+   */
+  getCharactersPage(page = 1, limit = 24, name?: string) {
+    if (!this.API_URL) return of([] as any[]);
+    const base = this.API_URL.replace(/\/$/, '');
+    const params = new URLSearchParams();
+    params.set('page', String(page));
+    params.set('limit', String(limit));
+    if (name) params.set('name', name);
+    const url = `${base}?${params.toString()}`;
+    const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
+
+    return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
+      tap((resp) => {
+        // eslint-disable-next-line no-console
+        console.debug(
+          '[CharacterService] getCharactersPage',
+          page,
+          'status:',
+          resp.status,
+          'url:',
+          url
+        );
+      }),
+      map((resp: any) => resp?.body as any),
+      catchError((err) => {
+        // eslint-disable-next-line no-console
+        console.error('CharacterService.getCharactersPage error', err, 'url:', url);
+        return of([] as any[]);
+      })
+    );
+  }
+
+  /**
+   * Generic paginated collection fetch for endpoints like /clans, /villages, etc.
+   * Builds URLs from the API root (drops the /characters suffix from configured API_URL).
+   */
+  getCollectionPage(collectionName: string, page = 1, limit = 24, name?: string) {
+    if (!this.API_URL) return of([] as any[]);
+    // derive root by removing /characters from configured API_URL
+    const root = this.API_URL.replace(/\/characters\/?$/i, '') || this.API_URL.replace(/\/$/, '');
+    const params = new URLSearchParams();
+    params.set('page', String(page));
+    params.set('limit', String(limit));
+    if (name) params.set('name', name);
+    const url = `${root}/${collectionName}?${params.toString()}`;
+    const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
+
+    return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
+      tap((resp) => {
+        // eslint-disable-next-line no-console
+        console.debug(
+          '[CharacterService] getCollectionPage',
+          collectionName,
+          page,
+          'status:',
+          resp.status,
+          'url:',
+          url
+        );
+      }),
+      map((resp: any) => resp?.body as any),
+      catchError((err) => {
+        // eslint-disable-next-line no-console
+        console.error('CharacterService.getCollectionPage error', collectionName, err, 'url:', url);
+        return of([] as any[]);
+      })
+    );
+  }
+
+  getCollectionByIds(collectionName: string, ids: Array<string | number>) {
+    if (!this.API_URL || !ids || !ids.length) return of([] as any[]);
+    const root = this.API_URL.replace(/\/characters\/?$/i, '') || this.API_URL.replace(/\/$/, '');
+    const query = ids.map((i) => encodeURIComponent(String(i))).join(',');
+    const url = `${root}/${collectionName}/ids?ids=${query}`;
+    const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
+
+    return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
+      map((resp: any) => resp?.body as any),
+      catchError((err) => {
+        // eslint-disable-next-line no-console
+        console.error(
+          'CharacterService.getCollectionByIds error',
+          collectionName,
+          err,
+          'url:',
+          url
+        );
+        return of([] as any[]);
+      })
+    );
+  }
+
+  /**
    * Fetch characters by a list of ids using the `/ids` endpoint.
    * Expects the API to accept a query parameter like `?ids=1,2,3`.
    */
