@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, catchError, map, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, of, tap, forkJoin } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterService {
   private http = inject(HttpClient);
   // Use a simple hardcoded API URL for now (no injection tokens)
   // Replace this with your real endpoint if desired.
-  private readonly API_URL = 'https://dattebayo-api.onrender.com/characters';
+  private readonly API_URL = 'https://dattebayo-api.onrender.com';
   // Allow headers to be set at runtime for debugging (e.g. Authorization)
   private API_HEADERS?: Record<string, string> | undefined = undefined;
 
@@ -34,13 +34,17 @@ export class CharacterService {
     }
 
     const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
-    return this.http.get<any>(this.API_URL, { headers, observe: 'response' as const }).pipe(
+    const url = `${this.API_URL}/characters`;
+    return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
       tap((resp) => {
         // debug: log full HttpResponse to help diagnose empty lists / CORS / auth
         // eslint-disable-next-line no-console
-        console.debug('[CharacterService] getCharacters response status:', resp.status);
-        // eslint-disable-next-line no-console
-        console.debug('[CharacterService] getCharacters response headers:', resp.headers);
+        console.debug(
+          '[CharacterService] getCharacters response status:',
+          resp.status,
+          'url:',
+          url
+        );
         // eslint-disable-next-line no-console
         console.debug('[CharacterService] getCharacters response body:', resp.body);
       }),
@@ -68,12 +72,11 @@ export class CharacterService {
    */
   getCharactersPage(page = 1, limit = 24, name?: string) {
     if (!this.API_URL) return of([] as any[]);
-    const base = this.API_URL.replace(/\/$/, '');
     const params = new URLSearchParams();
     params.set('page', String(page));
     params.set('limit', String(limit));
     if (name) params.set('name', name);
-    const url = `${base}?${params.toString()}`;
+    const url = `${this.API_URL}/characters?${params.toString()}`;
     const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
 
     return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
@@ -103,13 +106,11 @@ export class CharacterService {
    */
   getCollectionPage(collectionName: string, page = 1, limit = 24, name?: string) {
     if (!this.API_URL) return of([] as any[]);
-    // derive root by removing /characters from configured API_URL
-    const root = this.API_URL.replace(/\/characters\/?$/i, '') || this.API_URL.replace(/\/$/, '');
     const params = new URLSearchParams();
     params.set('page', String(page));
     params.set('limit', String(limit));
     if (name) params.set('name', name);
-    const url = `${root}/${collectionName}?${params.toString()}`;
+    const url = `${this.API_URL}/${collectionName}?${params.toString()}`;
     const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
 
     return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
@@ -136,9 +137,8 @@ export class CharacterService {
 
   getCollectionByIds(collectionName: string, ids: Array<string | number>) {
     if (!this.API_URL || !ids || !ids.length) return of([] as any[]);
-    const root = this.API_URL.replace(/\/characters\/?$/i, '') || this.API_URL.replace(/\/$/, '');
     const query = ids.map((i) => encodeURIComponent(String(i))).join(',');
-    const url = `${root}/${collectionName}/ids?ids=${query}`;
+    const url = `${this.API_URL}/${collectionName}/ids?ids=${query}`;
     const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
 
     return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
@@ -158,33 +158,42 @@ export class CharacterService {
   }
 
   /**
-   * Fetch characters by a list of ids using the `/ids` endpoint.
-   * Expects the API to accept a query parameter like `?ids=1,2,3`.
+   * Fetch single item for a collection like /clans/:id
    */
-  getCharactersByIds(ids: Array<string | number>) {
-    if (!this.API_URL || !ids || !ids.length) return of([] as any[]);
+  getCollectionById(collectionName: string, id: string | number) {
+    if (!this.API_URL || id === undefined || id === null) return of(null as any);
 
-    const base = this.API_URL.replace(/\/$/, '');
-    const query = ids.map((i) => encodeURIComponent(String(i))).join(',');
-    const url = `${base}/ids?ids=${query}`;
+    const url = `${this.API_URL}/${collectionName}/${encodeURIComponent(String(id))}`;
     const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
 
     return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(
       tap((resp) => {
-        // debug: log full HttpResponse for ids endpoint
         // eslint-disable-next-line no-console
-        console.debug('[CharacterService] getCharactersByIds status:', resp.status, 'url:', url);
+        console.debug('[CharacterService] getCollectionById status:', resp.status, 'url:', url);
         // eslint-disable-next-line no-console
-        console.debug('[CharacterService] getCharactersByIds body:', resp.body);
+        console.debug('[CharacterService] getCollectionById body:', resp.body);
       }),
-      // Pass the endpoint response body directly to callers (no JSON remapping)
       map((resp: any) => resp?.body as any),
-      tap((raw) => {
-        // debug: log raw API response for ids endpoint
+      catchError((err) => {
         // eslint-disable-next-line no-console
-        console.debug('[CharacterService] getCharactersByIds raw response:', raw, 'url:', url);
-      }),
-      tap((list) => {
+        console.error('CharacterService.getCollectionById error', collectionName, err, 'url:', url);
+        return of(null as any);
+      })
+    );
+  }
+
+  /**
+   * Fetch characters by a list of ids using individual `/characters/:id` endpoint calls.
+   * Fetches each character separately and aggregates results.
+   */
+  getCharactersByIds(ids: Array<string | number>) {
+    if (!this.API_URL || !ids || !ids.length) return of([] as any[]);
+
+    const requests = ids.map((id) => this.getCharacterById(id).pipe(catchError(() => of(null))));
+
+    return forkJoin(requests).pipe(
+      map((results: any[]) => results.filter((r) => r !== null)),
+      tap((list: any[]) => {
         // merge fetched items into cache without duplicating
         const existingRaw = this.cache$.getValue();
         const existing = Array.isArray(existingRaw) ? existingRaw : [];
@@ -214,8 +223,7 @@ export class CharacterService {
   getCharacterById(id: string | number) {
     if (!this.API_URL || id === undefined || id === null) return of(null as any);
 
-    const base = this.API_URL.replace(/\/$/, '');
-    const url = `${base}/${encodeURIComponent(String(id))}`;
+    const url = `${this.API_URL}/characters/${encodeURIComponent(String(id))}`;
     const headers = this.API_HEADERS ? new HttpHeaders(this.API_HEADERS) : undefined;
 
     return this.http.get<any>(url, { headers, observe: 'response' as const }).pipe(

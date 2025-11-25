@@ -20,7 +20,7 @@
   </ng-template>
 
   <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <li *ngFor="let c of filtered()">
+    <li *ngFor="let c of filtered()" class="dark:bg-gray-800 dark:text-white rounded px-6 py-8 ring shadow ring-gray-900/5">
       <a
         [routerLink]="['/character', c.id ?? c._id ?? c.slug]"
         class="block p-4 rounded-lg shadow hover:shadow-lg transition-colors h-full"
@@ -32,7 +32,7 @@
   </ul>
   <div class="mt-4 text-center">
     <button
-      *ngIf="hasMore()"
+      NgIf="hasMore()"
       (click)="showMore()"
       class="px-4 py-2 rounded-md border"
       [disabled]="loadingMore() || loading()"
@@ -51,4 +51,5 @@
   [loading]="s.loading()"
   [hasMore]="s.hasMore()"
   [onShowMore]="getShowMore(s)"
+  [collectionKey]="s.key"
 ></app-collection-section>

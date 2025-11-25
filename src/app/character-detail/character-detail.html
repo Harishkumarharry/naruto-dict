@@ -6,10 +6,17 @@
   <div style="margin-top: 16px">
     <a routerLink="/">← Back</a>
   </div>
-  
+
   <ng-template [ngIf]="!loading() && character()">
     <div class="character-detail">
       <h2>{{ character().name }}</h2>
+
+      <div class="flex items-center">
+        <img [src]="character().images[0]" />
+        <div>
+          <strong>{{ character().name }}</strong>
+        </div>
+      </div>
 
       <div class="character-images" *ngIf="character().images?.length">
         <h3>Images</h3>
@@ -41,11 +48,12 @@
         </ul>
       </div>
 
-      <div class="character-section" *ngIf="character().jutsu?.length">
+      <div class="character-section" NgIf="character().jutsu?.length">
         <h3>Jutsu</h3>
         <ul>
           <li *ngFor="let j of character().jutsu">{{ j }}</li>
         </ul>
+        <div class="grid grid-cols-2 sm:grid-cols-3"></div>
       </div>
 
       <div class="character-section" *ngIf="character().natureType?.length">

@@ -53,6 +53,14 @@ export default class Home {
     loading: any;
     hasMore: any;
   }> = [
+    // {
+    //   key: 'characters',
+    //   title: 'Characters',
+    //   desc: 'Access details about various characters within the Naruto world.',
+    //   items: signal<any[]>([]),
+    //   loading: signal(false),
+    //   hasMore: signal(true),
+    // },
     {
       key: 'clans',
       title: 'Clans',
@@ -229,11 +237,6 @@ export default class Home {
         this.characters.set([]);
       } finally {
         this.loading.set(false);
-        console.log(
-          'Home.loadCharacters loaded',
-          this.characters().length,
-          'characters (paginated)'
-        );
       }
     })();
   }

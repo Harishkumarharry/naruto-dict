@@ -1,0 +1,47 @@
+<div class="detail-container">
+  <ng-template [ngIf]="loading()"><div class="loading">Loading…</div></ng-template>
+  <ng-template [ngIf]="error()"
+    ><div class="error">Error: {{ error() }}</div></ng-template
+  >
+
+  <div style="margin-top: 16px">
+    <a routerLink="/">← Back</a>
+  </div>
+
+  <ng-template [ngIf]="!loading() && item()">
+    <div class="character-detail">
+      <h2>{{ item().name || item().title || item().id }}</h2>
+
+      <div class="character-images" *ngIf="item().images?.length">
+        <h3>Images</h3>
+        <div class="image-list">
+          <img
+            *ngFor="let img of item().images"
+            [src]="img"
+            alt="{{ item().name || item().title }}"
+            class="character-image"
+          />
+        </div>
+      </div>
+
+      <div class="character-section" *ngFor="let key of item() | keyvalue">
+        <h3>{{ key.key }}</h3>
+        <div *ngIf="isArray(key.value)">
+          <ul>
+            <li *ngFor="let v of asArray(key.value)">{{ v }}</li>
+          </ul>
+        </div>
+        <div *ngIf="isObject(key.value)">
+          <ul>
+            <li *ngFor="let sub of asObject(key.value) | keyvalue">
+              {{ sub.key }}: {{ sub.value }}
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="!isArray(key.value) && !isObject(key.value)">{{ key.value }}</div>
+      </div>
+
+      <button class="scroll-top" (click)="scrollToTop()" aria-label="Scroll to top">▲</button>
+    </div>
+  </ng-template>
+</div>

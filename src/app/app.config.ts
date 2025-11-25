@@ -10,7 +10,7 @@ import { routes } from './app.routes';
 import { API_URL, API_HEADERS } from './api.tokens';
 
 // Default API URL; replace with your real endpoint or override value here
-const DEFAULT_API_URL = 'https://dattebayo-api.onrender.com/characters';
+const DEFAULT_API_URL = 'https://dattebayo-api.onrender.com';
 
 export const appConfig: ApplicationConfig = {
   providers: [
