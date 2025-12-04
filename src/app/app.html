@@ -1,12 +1,17 @@
 <div class="app-container">
   <header class="site-header">
     <div class="flex items-center justify-center">
-      <div>
+      <div class="theme-text">
         <h1 class="site-title">{{ title() }}</h1>
         <p class="site-subtitle">
           A small Naruto character dictionary — explore ninjas, villages, and affiliations.
         </p>
       </div>
+
+      <button type="button" class="theme-toggle-btn" (click)="toggleTheme()">
+        <span *ngIf="!isDark()">🌙 Dark</span>
+        <span *ngIf="isDark()">☀️ Light</span>
+      </button>
     </div>
   </header>
 

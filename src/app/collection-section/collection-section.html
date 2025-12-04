@@ -17,7 +17,7 @@
     </div>
   </ng-template>
   <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <li *ngFor="let item of items">
+    <li *ngFor="let item of items" class="dark:bg-gray-800 dark:text-white rounded  ring shadow ring-gray-900/5">
       <a
         *ngIf="collectionKey"
         [routerLink]="[collectionKey, item.id ?? item._id ?? item.slug]"

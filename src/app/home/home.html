@@ -1,32 +1,30 @@
 <section class="search-section">
   <input
     aria-label="Search characters"
-    class="w-full px-3 py-2 text-sm rounded-lg"
+    class="w-full px-3 py-2 text-sm theme-input"
     placeholder="Search characters (e.g. Naruto, Sasuke)"
     (input)="onSearch($any($event.target).value)"
-    [ngClass]="'theme-input'"
   />
 </section>
 
 <!-- Additional collections (clans, villages, etc.) -->
 <section class="characters">
-  <h2 class="section-title">Characters</h2>
+  <h2 class="section-title theme-text">Characters</h2>
 
   <ng-template [ngIf]="loading()">
-    <div class="text-center text-sm" [ngClass]="'theme-text'">Loading characters…</div>
+    <div class="text-center text-sm theme-text">Loading characters…</div>
   </ng-template>
   <ng-template [ngIf]="error()">
     <div class="text-center text-sm text-red-400">Error: {{ error() }}</div>
   </ng-template>
 
   <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <li *ngFor="let c of filtered()" class="dark:bg-gray-800 dark:text-white rounded px-6 py-8 ring shadow ring-gray-900/5">
+    <li *ngFor="let c of filtered()" class="rounded ring shadow ring-gray-900/5">
       <a
         [routerLink]="['/character', c.id ?? c._id ?? c.slug]"
-        class="block p-4 rounded-lg shadow hover:shadow-lg transition-colors h-full"
-        [ngClass]="'theme-card'"
+        class="block p-4 rounded-lg shadow hover:shadow-lg transition-colors h-full theme-card"
       >
-        <h3 class="text-lg font-semibold mb-1" [ngClass]="'theme-text'">{{ c.name || c.title }}</h3>
+        <h3 class="text-lg font-semibold mb-1 theme-text">{{ c.name || c.title }}</h3>
       </a>
     </li>
   </ul>
@@ -34,7 +32,7 @@
     <button
       NgIf="hasMore()"
       (click)="showMore()"
-      class="px-4 py-2 rounded-md border"
+      class="px-4 py-2 rounded-md border theme-card"
       [disabled]="loadingMore() || loading()"
     >
       {{ loadingMore() ? 'Loading…' : 'Show more' }}

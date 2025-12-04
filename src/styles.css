@@ -1,2 +1,82 @@
 /* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@tailwind "tailwindcss/base";
+@tailwind "tailwindcss/components";
+@tailwind "tailwindcss/utilities";
+
+@layer components {
+  /* App layout */
+  .app-container {
+    @apply min-h-screen flex flex-col bg-slate-50 text-slate-900;
+  }
+
+  .site-header {
+    @apply py-6 border-b border-slate-200 bg-white;
+  }
+
+  .site-title {
+    @apply text-3xl font-semibold text-center;
+  }
+
+  .site-subtitle {
+    @apply text-sm text-slate-600 text-center mt-1;
+  }
+
+  .site-footer {
+    @apply mt-auto py-4 text-center text-xs text-slate-500;
+  }
+
+  /* Dark overrides for layout */
+  .dark .app-container {
+    @apply bg-slate-900 text-slate-100;
+  }
+
+  .dark .site-header {
+    @apply border-slate-700 bg-slate-800;
+  }
+
+  .dark .site-subtitle {
+    @apply text-slate-300;
+  }
+
+  .dark .site-footer {
+    @apply text-slate-400;
+  }
+
+  /* Shared theme classes you already use */
+  .theme-input {
+    @apply bg-white text-slate-900 border border-slate-300 rounded-lg;
+  }
+
+  .dark .theme-input {
+    @apply bg-slate-800 text-slate-100 border-slate-600;
+  }
+
+  .theme-card {
+    @apply bg-slate-100 text-slate-900;
+  }
+
+  .dark .theme-card {
+    @apply bg-slate-800 text-slate-100;
+  }
+
+  .theme-text {
+    @apply text-slate-900;
+  }
+
+  .dark .theme-text {
+    @apply text-slate-100;
+  }
+
+  /* Toggle button */
+  .theme-toggle-btn {
+    @apply inline-flex items-center gap-2 rounded-full border border-slate-300
+           px-4 py-1.5 text-sm font-medium
+           bg-slate-100 hover:bg-slate-200 transition;
+  }
+
+  .dark .theme-toggle-btn {
+    @apply border-slate-600 bg-slate-700 hover:bg-slate-600;
+  }
+}

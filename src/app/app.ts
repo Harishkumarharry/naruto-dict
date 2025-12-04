@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, DOCUMENT, Inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
@@ -11,47 +11,31 @@ import { RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = signal('Naruto Dictionary');
 
-  protected readonly dark = signal<boolean>(false);
+  isDark = signal(false);
 
-  constructor() {
-    // initialize from localStorage or system preference
-    try {
-      const saved = localStorage.getItem('naruto-dark');
-      if (saved !== null) {
-        this.dark.set(saved === 'true');
-      } else if (typeof window !== 'undefined' && window.matchMedia) {
-        this.dark.set(window.matchMedia('(prefers-color-scheme: dark)').matches);
-      }
-    } catch (e) {
-      // ignore
-    }
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    this.applyTheme(this.dark());
+    const initalDark = saved === 'dark' || (!saved && prefersDark);
+    this.setDark(initalDark, false);
   }
 
-  toggleDark(): void {
-    this.dark.update((v) => {
-      const next = !v;
-      try {
-        localStorage.setItem('naruto-dark', String(next));
-      } catch (e) {
-        // ignore
-      }
-      this.applyTheme(next);
-      return next;
-    });
+  toggleTheme() {
+    this.setDark(!this.isDark());
   }
 
-  private applyTheme(enabled: boolean) {
-    try {
-      const el = typeof document !== 'undefined' ? document.documentElement : null;
-      if (el) {
-        el.classList.toggle('dark', enabled);
-      }
-    } catch (e) {
-      // ignore
+  private setDark(isDark: boolean, persist = true) {
+    this.isDark.set(isDark);
+
+    const classList = this.document.documentElement.classList;
+
+    if(isDark) {
+      classList.add('dark');
+      if(persist) localStorage.setItem('theme','dark');
+    } else {
+      classList.remove('dark');
+      if(persist) localStorage.setItem('theme', 'light');
     }
   }
-
-  // App is a lightweight shell; page logic lives in routed components (Home)
 }
