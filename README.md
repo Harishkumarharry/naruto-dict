@@ -2,6 +2,10 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
 
+## About
+
+This website to browse characters from Naruto or ninja universe. Used [Naruto API](https://api-dattebayo.vercel.app/docs#get-all-items) to get all the data and created the webpage based on that.
+
 ## Development server
 
 To start a local development server, run:
