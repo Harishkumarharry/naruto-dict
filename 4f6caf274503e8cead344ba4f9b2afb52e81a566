@@ -1,0 +1,85 @@
+[33mcommit 4f6caf274503e8cead344ba4f9b2afb52e81a566[m[33m ([m[1;36mHEAD -> [m[1;32mHarish[m[33m, [m[1;31morigin/Harish[m[33m)[m
+Author: Harishkumarharry <tharish.1996@gmail.com>
+Date:   Tue Dec 9 10:13:19 2025 -0500
+
+    Clean up
+    
+    Removed unnecessary files
+
+[33mcommit 637ac9e4d5df0d84b78ff42d567620ffcef0cef8[m
+Author: Harishkumarharry <tharish.1996@gmail.com>
+Date:   Tue Dec 9 10:12:21 2025 -0500
+
+    Github Deploy
+    
+    Added Github build and deploy
+
+[33mcommit e09beb652250cf7136692538180ae4a353a7d5a3[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Mon Dec 8 10:33:16 2025 -0500
+
+    Fixing deployment
+    
+    Trying to fix pages deployment
+
+[33mcommit 6335aa3e50785eb388db4ddabeb60d7244726164[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Sat Dec 6 13:25:11 2025 -0500
+
+    publish changes
+
+[33mcommit 75ca715dad4d19e165ff1947ca5c3a1292e16071[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Sat Dec 6 13:21:13 2025 -0500
+
+    Publish fix
+    
+    Fixing publish issue
+
+[33mcommit a8a3e54eda1ccb0e17f26a573707cc5f9d58c5b2[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Sat Dec 6 13:18:01 2025 -0500
+
+    Publish changes
+    
+    Added angular github publish page changes
+
+[33mcommit 21b659a3c9329c23222dc77bbb672800fc89c5d9[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Thu Dec 4 17:52:42 2025 -0500
+
+    Dark mode
+    
+    Added dark mode to the home page.
+    
+    A toggle button added in the home page upon clicking changes from dark to light or vice-versa
+
+[33mcommit 0559588ef08a98634f2d15bc850db1b641d86009[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Tue Nov 25 12:24:20 2025 -0500
+
+    Component creation
+    
+    Added multiple components for individual sections
+
+[33mcommit 8d696b2eadc31ed0959c9ea31c57ea790eca1d27[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Mon Nov 24 14:54:10 2025 -0500
+
+    Home page update
+    
+    Added more end points from the API docs and loading few of the result in the home page
+
+[33mcommit 8f298a8d87e45d581b2a933c8ab41949867219c8[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Fri Nov 21 16:37:09 2025 -0500
+
+    Init
+    
+    A dictionary for search or viewing details from Naruto universe
+
+[33mcommit 556d2ff548bad6a7611321d39fdd79162e9e58b5[m
+Author: HarishKumarT3547 <54526806+Harishkumarharry@users.noreply.github.com>
+Date:   Thu Nov 20 09:49:52 2025 -0500
+
+    initial commit
