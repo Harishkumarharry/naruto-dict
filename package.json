@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "github-build": "ng build --configuration production --base-href 'https://harishkumarharry.github.io/naruto-dict/'",
+    "github-deploy": "npx angular-cli-ghpages --dir=dist/naruto-dict/browser --no-silent"
   },
   "prettier": {
     "printWidth": 100,
