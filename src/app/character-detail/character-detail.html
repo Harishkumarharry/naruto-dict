@@ -3,9 +3,13 @@
   <ng-template [ngIf]="error()"
     ><div class="error">Error: {{ error() }}</div></ng-template
   >
-  <div style="margin-top: 16px">
-    <a routerLink="/">← Back</a>
-  </div>
+  <!-- <div style="margin-top: 16px">
+    <a (click)="goBack()">← Back</a>
+  </div> -->
+
+  <button (click)="goBack()" class="theme-card px-3 py-1 rounded">
+  ← Back
+</button>
 
   <ng-template [ngIf]="!loading() && character()">
     <div class="character-detail">

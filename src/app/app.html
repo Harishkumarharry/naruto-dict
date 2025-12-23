@@ -2,7 +2,9 @@
   <header class="site-header">
     <div class="flex items-center justify-center">
       <div class="theme-text">
-        <h1 class="site-title">{{ title() }}</h1>
+        <a routerLink="/">
+          <h1 class="site-title">{{ title() }}</h1>
+        </a>
         <p class="site-subtitle">
           A small Naruto character dictionary — explore ninjas, villages, and affiliations.
         </p>
@@ -15,9 +17,96 @@
     </div>
   </header>
 
+  <div
+    class="hidden w-full md:block md:w-auto"
+    id="navbar-default"
+    style="display: flex; justify-content: center"
+  >
+    <ul
+      class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-default rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary"
+    >
+      <li>
+        <a
+          routerLink="/collection/characters"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-white bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0"
+          aria-current="page"
+          >Characters</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/collection/clans"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+          >Clans</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/collection/villages"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+          >Villages</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/collection/kekkei-genkai"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+          >Kekkei Genkai</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/collection/tailed-beasts"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+          >Tailed Beasts</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/collection/teams"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+          >Teams</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/collection/akatsuki"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+          >Akatsuki</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/collection/kara"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+          >Kara</a
+        >
+      </li>
+    </ul>
+  </div>
+
   <main>
     <router-outlet></router-outlet>
   </main>
 
-  <footer class="site-footer">Tip: Click a character to view details (not yet implemented).</footer>
+  <footer class="site-footer">
+    <section>© Bingo</section>
+    Info: Search is not implemented yet.
+  </footer>
 </div>

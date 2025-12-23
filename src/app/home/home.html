@@ -1,53 +1,9 @@
-<section class="search-section">
-  <input
-    aria-label="Search characters"
-    class="w-full px-3 py-2 text-sm theme-input"
-    placeholder="Search characters (e.g. Naruto, Sasuke)"
-    (input)="onSearch($any($event.target).value)"
-  />
+<section class="intro-section">
+  <p class="intro-text">
+    Welcome to the Naruto Dictionary — a curated reference for characters, clans, villages, and
+    affiliations from the Naruto universe. This application allows you to quickly explore detailed
+    information about ninjas, their origins, and their roles across the series, all in one place.
+    Use the search and browse features below to discover your favorite characters and learn more
+    about the world of Naruto.
+  </p>
 </section>
-
-<!-- Additional collections (clans, villages, etc.) -->
-<section class="characters">
-  <h2 class="section-title theme-text">Characters</h2>
-
-  <ng-template [ngIf]="loading()">
-    <div class="text-center text-sm theme-text">Loading characters…</div>
-  </ng-template>
-  <ng-template [ngIf]="error()">
-    <div class="text-center text-sm text-red-400">Error: {{ error() }}</div>
-  </ng-template>
-
-  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <li *ngFor="let c of filtered()" class="rounded ring shadow ring-gray-900/5">
-      <a
-        [routerLink]="['/character', c.id ?? c._id ?? c.slug]"
-        class="block p-4 rounded-lg shadow hover:shadow-lg transition-colors h-full theme-card"
-      >
-        <h3 class="text-lg font-semibold mb-1 theme-text">{{ c.name || c.title }}</h3>
-      </a>
-    </li>
-  </ul>
-  <div class="mt-4 text-center">
-    <button
-      NgIf="hasMore()"
-      (click)="showMore()"
-      class="px-4 py-2 rounded-md border theme-card"
-      [disabled]="loadingMore() || loading()"
-    >
-      {{ loadingMore() ? 'Loading…' : 'Show more' }}
-    </button>
-  </div>
-</section>
-
-<!-- Additional collections (clans, villages, etc.) -->
-<app-collection-section
-  *ngFor="let s of sections"
-  [title]="s.title"
-  [desc]="s.desc"
-  [items]="s.items()"
-  [loading]="s.loading()"
-  [hasMore]="s.hasMore()"
-  [onShowMore]="getShowMore(s)"
-  [collectionKey]="s.key"
-></app-collection-section>
