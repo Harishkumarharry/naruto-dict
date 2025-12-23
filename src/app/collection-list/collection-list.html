@@ -1,0 +1,40 @@
+<section class="search-section">
+  <input
+    aria-label="Search characters"
+    class="w-full px-3 py-2 text-sm theme-input"
+    placeholder="Search characters (e.g. Naruto, Sasuke)"
+    (input)="onSearch($any($event.target).value)"
+  />
+</section>
+
+<div class="collection-list-container">
+  <h2 class="section-title theme-text">{{ title() }}</h2>
+  <p class="section-desc theme-text">{{ desc() }}</p>
+  
+  <div NgIf="loading()" class="text-center text-sm theme-text">Loading…</div>
+  
+  <div NgIf="!loading() && items().length === 0" class="text-center text-sm theme-text">
+    No items found.
+  </div>
+  
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <li *ngFor="let item of items()" class="rounded ring shadow ring-gray-900/5">
+      <a
+        [routerLink]="['/', collectionKey(), item.id ?? item._id ?? item.slug]"
+        class="block p-4 rounded-lg shadow hover:shadow-lg transition-colors h-full theme-card"
+      >
+        <h3 class="text-lg font-semibold mb-1 theme-text">{{ item.name || item.title }}</h3>
+      </a>
+    </li>
+  </ul>
+  <div class="mt-4 text-center">
+    <button
+      NgIf="hasMore()"
+      (click)="loadItems()"
+      class="px-4 py-2 rounded-md border theme-card"
+      [disabled]="loading()"
+    >
+      {{ loading() ? 'Loading…' : 'Show more' }}
+    </button>
+  </div>
+</div>

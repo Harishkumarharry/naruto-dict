@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule, NgIf, NgForOf, KeyValuePipe } from '@angular/common';
+import { CommonModule, NgForOf, KeyValuePipe, Location } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CharacterService } from '../character.service';
 
 @Component({
   selector: 'app-character-detail',
   standalone: true,
-  imports: [CommonModule, NgIf, NgForOf, KeyValuePipe, RouterLink],
+  imports: [CommonModule, KeyValuePipe],
   templateUrl: './character-detail.html',
   styleUrls: ['./character-detail.css'],
 })
@@ -25,6 +25,7 @@ export default class CharacterDetail {
   protected readonly character = signal<any | null>(null);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
+  
 
   isArray(val: any): boolean {
     return Array.isArray(val);
@@ -45,7 +46,7 @@ export default class CharacterDetail {
     }
   }
 
-  constructor() {
+  constructor(private location: Location) {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       this.error.set('Missing character id');
@@ -72,5 +73,9 @@ export default class CharacterDetail {
         this.loading.set(false);
       },
     });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

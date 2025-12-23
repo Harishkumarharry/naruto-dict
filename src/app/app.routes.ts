@@ -8,10 +8,12 @@ import TailedBeastsDetail from './tailed-beasts-detail/tailed-beasts-detail';
 import AkatsukiDetail from './akatsuki-detail/akatsuki-detail';
 import KekkkeiGenkaiDetail from './kekkei-genkai-detail/kekkei-genkai-detail';
 import KaraDetail from './kara-detail/kara-detail';
+import { CollectionList } from './collection-list/collection-list';
 
 export const routes: Routes = [
   { path: '', component: Home },
-  { path: 'character/:id', component: CharacterDetail },
+  { path: 'collection/:collectionKey', component: CollectionList},
+  { path: 'characters/:id', component: CharacterDetail },
   { path: 'clans/:id', component: ClansDetail },
   { path: 'villages/:id', component: VillagesDetail },
   { path: 'teams/:id', component: TeamsDetail },
