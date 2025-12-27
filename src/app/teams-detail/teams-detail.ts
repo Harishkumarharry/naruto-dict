@@ -6,7 +6,7 @@ import { CharacterService } from '../character.service';
 @Component({
   selector: 'app-teams-detail',
   standalone: true,
-  imports: [CommonModule, KeyValuePipe, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './teams-detail.html',
   styleUrls: ['./teams-detail.css'],
 })
@@ -15,6 +15,7 @@ export default class TeamsDetail {
   private svc = inject(CharacterService);
 
   protected readonly item = signal<any | null>(null);
+  protected readonly characters = signal<any[]>([]);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
 
@@ -48,10 +49,23 @@ export default class TeamsDetail {
       return;
     }
 
-    this.svc.getCollectionById('teams', id).subscribe({
+    this.svc.getCollectionById('clans', id).subscribe({
       next: (it) => {
         this.item.set(it ?? null);
-        this.loading.set(false);
+        // fetch character details if characters array exists
+        if (it?.characters && Array.isArray(it.characters) && it.characters.length > 0) {
+          this.svc.getCharactersByIds(it.characters).subscribe({
+            next: (chars) => {
+              this.characters.set(Array.isArray(chars) ? chars : []);
+              this.loading.set(false);
+            },
+            error: () => {
+              this.loading.set(false);
+            },
+          });
+        } else {
+          this.loading.set(false);
+        }
       },
       error: (err) => {
         this.error.set(String(err));
