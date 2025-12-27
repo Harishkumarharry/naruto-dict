@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule, KeyValuePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CharacterService } from '../character.service';
 
 @Component({
   selector: 'app-tailed-beasts-detail',
   standalone: true,
-  imports: [CommonModule, KeyValuePipe, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './tailed-beasts-detail.html',
   styleUrls: ['./tailed-beasts-detail.css'],
 })
@@ -15,6 +15,7 @@ export default class TailedBeastsDetail {
   private svc = inject(CharacterService);
 
   protected readonly item = signal<any | null>(null);
+  protected readonly characters = signal<any[]>([]);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
 
@@ -48,10 +49,23 @@ export default class TailedBeastsDetail {
       return;
     }
 
-    this.svc.getCollectionById('tailed-beasts', id).subscribe({
+    this.svc.getCollectionById('clans', id).subscribe({
       next: (it) => {
         this.item.set(it ?? null);
-        this.loading.set(false);
+        // fetch character details if characters array exists
+        if (it?.characters && Array.isArray(it.characters) && it.characters.length > 0) {
+          this.svc.getCharactersByIds(it.characters).subscribe({
+            next: (chars) => {
+              this.characters.set(Array.isArray(chars) ? chars : []);
+              this.loading.set(false);
+            },
+            error: () => {
+              this.loading.set(false);
+            },
+          });
+        } else {
+          this.loading.set(false);
+        }
       },
       error: (err) => {
         this.error.set(String(err));

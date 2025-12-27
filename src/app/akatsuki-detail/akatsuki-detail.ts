@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule, KeyValuePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CharacterService } from '../character.service';
 
 @Component({
   selector: 'app-akatsuki-detail',
   standalone: true,
-  imports: [CommonModule, KeyValuePipe, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './akatsuki-detail.html',
   styleUrls: ['./akatsuki-detail.css'],
 })
@@ -51,7 +51,7 @@ export default class AkatsukiDetail {
     this.svc.getCollectionById('akatsuki', id).subscribe({
       next: (it) => {
         this.item.set(it ?? null);
-        this.loading.set(false);
+          this.loading.set(false);
       },
       error: (err) => {
         this.error.set(String(err));
