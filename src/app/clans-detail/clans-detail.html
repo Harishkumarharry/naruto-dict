@@ -17,7 +17,7 @@
         <div class="characters-grid">
           <a
             *ngFor="let char of characters()"
-            [routerLink]="['/character', char.id ?? char._id]"
+            [routerLink]="['/characters', char.id ?? char._id]"
             class="character-card"
           >
             <img
@@ -25,6 +25,7 @@
               [src]="char.images[0]"
               [alt]="char.name"
               class="character-image"
+              fallback
             />
             <div class="character-info">
               <h4>{{ char.name || char.title }}</h4>

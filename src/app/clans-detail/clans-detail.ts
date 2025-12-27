@@ -2,11 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CharacterService } from '../character.service';
+import { FallbackImageDirective } from "../common/fallback-image.directive";
 
 @Component({
   selector: 'app-clans-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FallbackImageDirective],
   templateUrl: './clans-detail.html',
   styleUrls: ['./clans-detail.css'],
 })
